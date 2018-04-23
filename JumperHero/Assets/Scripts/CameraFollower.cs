@@ -39,6 +39,8 @@ public class CameraFollower : MonoBehaviour {
     public bool isTurning = false;
     public float heightOffset = 1.5f;
 
+    
+
     void Update()
     {
         Vector3 wantedPosition = target.TransformPoint(0, height, -distance);

@@ -6,6 +6,8 @@ public class SimpleCharacterControl : MonoBehaviour {
 
     public float oldHor = 0f;
     public CameraFollower camFollower;
+    public bool isOnMovingPlatform = false;
+    public Vector3 movingPlatformPosition = Vector3.zero;
 
     private enum ControlMode
     {
@@ -56,6 +58,14 @@ public class SimpleCharacterControl : MonoBehaviour {
                 m_isGrounded = true;
             }
         }
+        // Moving platform boolean
+        if (collision.transform.tag == "MovingPlatform")
+        {
+            movingPlatformPosition = collision.transform.position;
+            isOnMovingPlatform = true;
+            transform.parent = collision.transform;
+        }
+            
     }
 
     private void OnCollisionStay(Collision collision)
@@ -85,6 +95,10 @@ public class SimpleCharacterControl : MonoBehaviour {
             }
             if (m_collisions.Count == 0) { m_isGrounded = false; }
         }
+
+        // Moving platform boolean
+        if (collision.transform.tag == "MovingPlatform")
+            movingPlatformPosition = collision.transform.position;       
     }
 
     private void OnCollisionExit(Collision collision)
@@ -94,6 +108,12 @@ public class SimpleCharacterControl : MonoBehaviour {
             m_collisions.Remove(collision.collider);
         }
         if (m_collisions.Count == 0) { m_isGrounded = false; }
+
+        // Moving platform boolean
+        if (collision.transform.tag == "MovingPlatform")
+        {
+            isOnMovingPlatform = false;
+            transform.parent = null;        }
     }
 
 	void Update () {
